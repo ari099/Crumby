@@ -42,6 +42,31 @@ def query(sql):
       ctypes.windll.user32.MessageBoxW(0, "ERROR! {}".format(error.args[0]), "ERROR", 0)
       return []
 
+def getAllRecipes():
+    '''
+    Get all recipes from database
+
+    Query for all the recipes from the Recipe table in the database
+
+    Returns:
+    query_results(list): List of all the rows in the Recipes table
+    '''
+    return query("SELECT * FROM Recipe")
+
+def addRecipe(name, description, instructions, ingredients):
+    '''
+    Add new ingredient to the Ingredients table
+
+    Add new ingredient row to the Ingredients table in the Crummy Database
+
+    Parameters:
+    name(string): Name of Recipe
+    description(string): Description of Recipe
+    instructions(string): Recipe instructions
+    ingredients(string): Recipe ingredients
+    '''
+    query(f"INSERT INTO Recipe VALUES ({int(random.random()*100)}, '{name}', '{description}', '{instructions}', '{ingredients}')")
+
 def getAllIngredients():
     '''
     Get all ingredients from database
