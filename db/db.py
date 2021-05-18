@@ -1,6 +1,7 @@
 import sqlite3
 import ctypes
 import xml.etree.ElementTree as ET
+import random
 from PyQt5 import QtWidgets
 
 def query(sql):
@@ -40,3 +41,27 @@ def query(sql):
       # app.exec_()
       ctypes.windll.user32.MessageBoxW(0, "ERROR! {}".format(error.args[0]), "ERROR", 0)
       return []
+
+def getAllIngredients():
+    '''
+    Get all ingredients from database
+
+    Query for all the ingredients from the Ingredients table in the database
+
+    Returns:
+    query_results(list): List of all the rows in the Ingredients table
+    '''
+    return query("SELECT * FROM Ingredient")
+
+def addIngredient(name, quantity, unit):
+    '''
+    Add new ingredient to the Ingredients table
+
+    Add new ingredient row to the Ingredients table in the Crummy Database
+
+    Parameters:
+    name(string): Name of Ingredient
+    quantity(float): Quantity of Ingredient
+    unit(string): Unit of how much of the ingredient would be
+    '''
+    query(f"INSERT INTO Ingredient VALUES ({int(random.random()*100)}, '{name}', {quantity}, '{unit}')")

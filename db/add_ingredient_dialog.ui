@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>377</width>
+    <width>381</width>
     <height>127</height>
    </rect>
   </property>
@@ -88,15 +88,40 @@
     <string>Unit of Measure:</string>
    </property>
   </widget>
-  <widget class="QListWidget" name="unit_listbox">
+  <widget class="QComboBox" name="unit_combobox">
    <property name="geometry">
     <rect>
-     <x>225</x>
-     <y>50</y>
+     <x>220</x>
+     <y>51</y>
      <width>151</width>
      <height>31</height>
     </rect>
    </property>
+   <item>
+    <property name="text">
+     <string>slice</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>single</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>whole</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>lb</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>oz</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>
