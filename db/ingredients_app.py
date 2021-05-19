@@ -7,6 +7,7 @@ from db import *
 # Dialog Windows
 add_ingredient = uic.loadUiType("add_ingredient_dialog.ui")[0]
 
+# Class Declarations
 class CrummyAddIngredient(QtWidgets.QDialog, add_ingredient):
     """ Open AddIngredient Dialog Box"""
     def __init__(self, parent=None):

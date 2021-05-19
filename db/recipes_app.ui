@@ -23,6 +23,12 @@
       <height>341</height>
      </rect>
     </property>
+    <property name="selectionBehavior">
+     <enum>QAbstractItemView::SelectRows</enum>
+    </property>
+    <attribute name="horizontalHeaderStretchLastSection">
+     <bool>true</bool>
+    </attribute>
     <column>
      <property name="text">
       <string>Name</string>
@@ -48,17 +54,17 @@
     <property name="title">
      <string>Manage</string>
     </property>
-    <addaction name="actionSave"/>
-    <addaction name="actionNew"/>
+    <addaction name="actionAdd_Recipe"/>
+    <addaction name="actionRemove_Recipe"/>
    </widget>
    <addaction name="menuManage"/>
   </widget>
-  <action name="actionSave">
+  <action name="actionAdd_Recipe">
    <property name="text">
     <string>Add</string>
    </property>
   </action>
-  <action name="actionNew">
+  <action name="actionRemove_Recipe">
    <property name="text">
     <string>Remove</string>
    </property>
