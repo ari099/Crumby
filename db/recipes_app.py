@@ -17,7 +17,7 @@ class CrummyAddRecipe(QtWidgets.QDialog, add_recipe):
         self.recipeNameTextBox = self.findChild(QtWidgets.QTextEdit, "recipe_name_textedit")
         self.recipeDescriptionTextBox = self.findChild(QtWidgets.QTextEdit, "recipe_description_textedit")
         self.newIngredientTextBox = self.findChild(QtWidgets.QTextEdit, "new_ingredient_textedit")
-        self.newIngredientQuantityBox = self.findChild(QtWidgets.QSpinBox, "new_ingredient_quantity_spinbox")
+        self.newIngredientQuantityBox = self.findChild(QtWidgets.QDoubleSpinBox, "new_ingredient_quantity_spinbox")
         self.newIngredientUnitBox = self.findChild(QtWidgets.QComboBox, "new_ingredient_unit_combobox")
         self.ingredientsTableWidget = self.findChild(QtWidgets.QTableWidget, "ingredients_tablewidget")
         self.addIngredientButton = self.findChild(QtWidgets.QPushButton, "add_ingredient_pushbutton")
@@ -121,6 +121,8 @@ class Recipes(QtWidgets.QMainWindow):
 
         # Filling up the Recipes QTableWidget....
         self.recipesList = self.findChild(QtWidgets.QTableWidget, 'recipe_list_tablewidget')
+        # self.recipesList.itemDoubleClicked.connect(self.cellDoubleClick)
+        self.recipesList.itemSelectionChanged.connect(self.cellChange)
         recipes = getAllRecipes()
         for recipe in recipes:
             self.recipesList.setRowCount(self.recipesList.rowCount() + 1)
@@ -128,6 +130,17 @@ class Recipes(QtWidgets.QMainWindow):
             self.recipesList.setItem(self.recipesList.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(recipe[2]))
 
         self.show()
+
+    def cellDoubleClick(self, item):
+        row = item.row() + 1
+        column = item.column() + 1
+        # print(f'Row: {row}, Column {column}')
+
+    def cellChange(self):
+        print("Test")
+        # row = item.row() + 1
+        # column = item.column() + 1
+        # updateRecipe(self.recipesList.item(item.row(), 0).text(),"Name" if row == 1 else "Description", self.recipesList.item(item.row(), item.column()).text())
 
     def openAddRecipes(self):
         dlg = CrummyAddRecipe()

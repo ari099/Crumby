@@ -53,6 +53,17 @@ def getAllRecipes():
     '''
     return query("SELECT * FROM Recipe")
 
+def updateRecipe(name, columnName, newValue):
+    '''
+    Update field in recipe
+
+    Update the value of the column specified for the Recipe record in the database
+
+    Returns:
+    (void)
+    '''
+    query(f"UPDATE Recipe SET {columnName.capitalize()} = '{newValue}' WHERE Name == '{name}'")
+
 def addRecipe(name, description, instructions, ingredients):
     '''
     Add new ingredient to the Ingredients table

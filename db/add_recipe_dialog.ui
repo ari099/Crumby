@@ -69,7 +69,7 @@
     <rect>
      <x>410</x>
      <y>150</y>
-     <width>391</width>
+     <width>381</width>
      <height>31</height>
     </rect>
    </property>
@@ -196,7 +196,7 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>810</x>
+     <x>800</x>
      <y>160</y>
      <width>55</width>
      <height>16</height>
@@ -206,12 +206,12 @@
     <string>Quantity:</string>
    </property>
   </widget>
-  <widget class="QSpinBox" name="new_ingredient_quantity_spinbox">
+  <widget class="QDoubleSpinBox" name="new_ingredient_quantity_spinbox">
    <property name="geometry">
     <rect>
-     <x>870</x>
+     <x>861</x>
      <y>150</y>
-     <width>42</width>
+     <width>51</width>
      <height>31</height>
     </rect>
    </property>
@@ -241,6 +241,11 @@
    <item>
     <property name="text">
      <string>lb</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>cup</string>
     </property>
    </item>
    <item>

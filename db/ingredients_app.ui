@@ -26,7 +26,7 @@
    <string>Ingredients Manager</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="ingredients_list">
+   <widget class="QTableView" name="ingredients_list">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -44,27 +44,9 @@
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
     </property>
-    <attribute name="horizontalHeaderStretchLastSection">
+    <attribute name="verticalHeaderCascadingSectionResizes">
      <bool>true</bool>
     </attribute>
-    <attribute name="verticalHeaderStretchLastSection">
-     <bool>false</bool>
-    </attribute>
-    <column>
-     <property name="text">
-      <string>Name</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Quantity</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Unit</string>
-     </property>
-    </column>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
