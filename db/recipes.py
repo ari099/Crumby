@@ -1,15 +1,16 @@
 import os, sys, string, inspect
 import ctypes
 import xml.etree.ElementTree as ET
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import *
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlRecord
+from PyQt5.QtCore import Qt
 from db import *
 
-# Dialog Boxes
-add_recipe = uic.loadUiType("add_recipe_dialog.ui")[0]
+# The application user interfaces....
+mainWindow = uic.loadUiType("recipes_app.ui")[0]
+addDialog = uic.loadUiType("add_recipe_dialog.ui")[0]
 
-# Class Declarations
-class CrummyAddRecipe(QtWidgets.QDialog, add_recipe):
+class CrummyAddRecipe(QtWidgets.QDialog, addDialog):
     """ Open AddRecipe Dialog Box """
     def __init__(self, parent=None):
         QtWidgets.QDialog.__init__(self, parent)
@@ -108,65 +109,54 @@ class CrummyAddRecipe(QtWidgets.QDialog, add_recipe):
         if instructionList.currentItem() != None:
             instructionList.takeItem(instructionList.currentRow())
 
-class Recipes(QtWidgets.QMainWindow):
-    """ Recipes App MainWindow """
+class Recipes(QtWidgets.QMainWindow, mainWindow):
     def __init__(self):
-        super(Recipes, self).__init__()
-        uic.loadUi('recipes_app.ui', self)
-        # Menu options....
+        QtWidgets.QMainWindow.__init__(self)
+        mainWindow.__init__(self)
+        self.setupUi(self)
+        self.model = QSqlTableModel(self)
+        self.model.setTable("recipe")
+        self.model.setEditStrategy(QSqlTableModel.OnManualSubmit)
+        self.model.setHeaderData(0, Qt.Horizontal, "ID")
+        self.model.setHeaderData(1, Qt.Horizontal, "Name")
+        self.model.setHeaderData(2, Qt.Horizontal, "Description")
+        self.model.setHeaderData(3, Qt.Horizontal, "Instructions")
+        self.model.setHeaderData(4, Qt.Horizontal, "Ingredients")
+        self.model.select()
+
+        # Setting up the view
+        self.recipe_list_tableview.setModel(self.model)
+        self.setCentralWidget(self.recipe_list_tableview)
         self.add_recipe = self.findChild(QtWidgets.QAction, 'actionAdd_Recipe')
-        self.add_recipe.triggered.connect(self.openAddRecipes)
+        self.add_recipe.triggered.connect(self.add)
         self.remove_recipe = self.findChild(QtWidgets.QAction, 'actionRemove_Recipe')
-        self.remove_recipe.triggered.connect(self.removeRecipe)
+        self.remove_recipe.triggered.connect(self.remove)
 
-        # Filling up the Recipes QTableWidget....
-        self.recipesList = self.findChild(QtWidgets.QTableWidget, 'recipe_list_tablewidget')
-        # self.recipesList.itemDoubleClicked.connect(self.cellDoubleClick)
-        self.recipesList.itemSelectionChanged.connect(self.cellChange)
-        recipes = getAllRecipes()
-        for recipe in recipes:
-            self.recipesList.setRowCount(self.recipesList.rowCount() + 1)
-            self.recipesList.setItem(self.recipesList.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(recipe[1]))
-            self.recipesList.setItem(self.recipesList.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(recipe[2]))
-
-        self.show()
-
-    def cellDoubleClick(self, item):
-        row = item.row() + 1
-        column = item.column() + 1
-        # print(f'Row: {row}, Column {column}')
-
-    def cellChange(self):
-        print("Test")
-        # row = item.row() + 1
-        # column = item.column() + 1
-        # updateRecipe(self.recipesList.item(item.row(), 0).text(),"Name" if row == 1 else "Description", self.recipesList.item(item.row(), item.column()).text())
-
-    def openAddRecipes(self):
+    def add(self):
         dlg = CrummyAddRecipe()
         dlg.exec_()
-        self.reloadTable()
+        self.model.submitAll()
 
-    def reloadTable(self):
-        self.recipesList.setRowCount(0)
-        recipes = getAllRecipes()
-        for recipe in recipes:
-            self.recipesList.setRowCount(self.recipesList.rowCount() + 1)
-            self.recipesList.setItem(self.recipesList.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(recipe[1]))
-            self.recipesList.setItem(self.recipesList.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(recipe[2]))
+    def remove(self):
+        model = self.model
+        indices = self.recipe_list_tableview.selectionModel().selectedRows()
+        for index in sorted(indices): model.removeRow(index.row())
+        self.model.submitAll()
 
-    def removeRecipe(self):
-        """ Remove selected row from Recipes QTableWidget """
-        # Check if any are selected
-        if self.recipesList.currentRow() != None:
-            # If so, remove the selected item
-            currentRow = self.recipesList.currentRow()
-            query(f"DELETE FROM Recipe WHERE Name = '{self.recipesList.item(currentRow, 0).text()}'")
-            self.recipesList.removeRow(currentRow)
-            self.reloadTable()
-        else: ctypes.windll.user32.MessageBoxW(0, "Please select a row to remove", "ERROR", 0)
+def createConnection():
+    con = QSqlDatabase.addDatabase("QSQLITE")
+    con.setDatabaseName("crummy.db")
+    if not con.open():
+        QMessageBox.critical(
+            None,
+            "QTableView Example - Error!",
+            "Database Error: %s" % con.lastError().databaseText(),
+        )
+        return False
+    return True
 
-# Main app execution
 app = QtWidgets.QApplication(sys.argv)
+if not createConnection(): sys.exit(1)
 window = Recipes()
-app.exec_()
+window.show()
+sys.exit(app.exec_())
