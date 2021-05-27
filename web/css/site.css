@@ -1,0 +1,25 @@
+#navigation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  padding: 10px;
+  background: darkgreen;
+  border-bottom: 2px solid white;
+  box-shadow: 0px 0px 5px 0px black;
+}
+
+#navigation h3 {
+  color: white;
+  margin: 0px;
+}
+
+#get {
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#recipeList {
+  width: 100%;
+}
