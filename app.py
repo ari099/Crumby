@@ -5,6 +5,15 @@ init('web')
 
 @expose
 def getRecipes():
+    '''
+    Getting all relevant recipes
+
+    Obtaining recipes from the database based on ingredients in
+    the database
+
+    Returns:
+    recipes(list) - Relevant recipes
+    '''
     results = query("SELECT Name, Description FROM Recipe")
     return results
 
